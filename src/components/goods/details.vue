@@ -22,7 +22,7 @@
     </div>
     <div class="shop-box maxwin">
       <button class="all" @click="addCart()">加入购物车</button>
-      <button class="all"  @click="toCart()">购物车走起</button>
+      <button class="all"  @click="toCart()">查看购物车</button>
     </div>
     <div style="height:40px"></div>
   </div>

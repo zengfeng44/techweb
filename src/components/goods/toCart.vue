@@ -34,7 +34,7 @@
         <span style="color:red">￥{{money}}</span>
       </div>
       <div class="buy">
-        <button @click="getShop()">立即结算</button>
+        <button @click="getShop()">马骝的结算</button>
       </div>
     </div>
     <div class="pay-box appgb appbk maxwin" v-else="shopInfo==1">
