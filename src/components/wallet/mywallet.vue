@@ -4,24 +4,24 @@
     <div class="amountbox" :style="amountSTY">
       <img class="img" src="../../assets/money/money02.png" width="100%">
       <div class="amtxt1 txt" :style="absbox1">
-        动态奖金
-        <br>
-        {{myData.product_money}}
-      </div>
-      <div class="amtxt2 txt" :style="absbox1">
         现金账户
         <br>
-        {{myData.future_money}}
+       {{myData.cash_money}}
+      </div>
+      <div class="amtxt2 txt" :style="absbox1">
+        动态奖金
+        <br>
+         {{myData.product_money}}
       </div>
       <div class="amtxt3 txt" :style="absbox1">
-        总积分
+        商城积分
         <br>
-        {{myData.digital_money}}
+        {{myData.product_money}}
       </div>
       <div class="amtxt4 txt" :style="absbox1">
         科技积分
         <br>
-        {{myData.cash_money}}
+        {{myData.digital_money}}
       </div>
     </div>
 
@@ -34,16 +34,16 @@
     </div>
     <div class="menubox">
       <ul>
-        <li :style="menutxt">
+        <li class="cur" :style="menutxt">
           <span>充值</span>
         </li>
-        <li :style="menutxt">
+        <li class="cur" :style="menutxt">
           <span>提现</span>
         </li>
-        <router-link to="/goods/cart" tag="li" :style="menutxt">
+        <router-link to="/goods/cart" class="cur" tag="li" :style="menutxt">
           <span>转账</span>
         </router-link>
-        <router-link to="/address/index" tag="li" :style="menutxt">
+        <router-link to="/wallet/amounts" class="cur" tag="li" :style="menutxt">
           <span>明细</span>
         </router-link>
       </ul>
@@ -112,7 +112,7 @@ export default {
     this.absbox2 = txtH + "---" + txt;
     this.amountSTY = this.amountSTY + "height:" + imgH + "px;";
     this.absbox1 = this.absbox1 + "min-height:" + txt + "px;";
-    this.absbox1 = this.absbox1 + "line-height" + txtH + "px;";
+    this.absbox1 = this.absbox1 + "line-height:" + txtH + "px;";
     this.menutxt = this.menutxt + "height:" + liH + "px;";
     this.menutxt = this.menutxt + "line-height:" + liH + "px;";
   }
@@ -135,8 +135,6 @@ export default {
 }
 .amountbox .amtxt1 {
   width: 33%;
-  height: 60px;
-  line-height: 30px;
   position: absolute;
   top: 0;
   left: 23%;
@@ -145,8 +143,6 @@ export default {
 }
 .amountbox .amtxt2 {
   width: 33%;
-  height: 60px;
-  line-height: 30px;
   position: absolute;
   top: 48.84%;
   left: 2%;
@@ -155,8 +151,6 @@ export default {
 }
 .amountbox .amtxt3 {
   width: 23%;
-  height: 60px;
-  line-height: 30px;
   position: absolute;
   top: 77%;
   left: 32%;
@@ -165,8 +159,6 @@ export default {
 }
 .amountbox .amtxt4 {
   width: 22%;
-  height: 60px;
-  line-height: 30px;
   position: absolute;
   top: 85%;
   left: 66%;

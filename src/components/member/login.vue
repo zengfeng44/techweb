@@ -3,12 +3,12 @@
     <div class="loginbox">
       <div class="title">
         <span style="margin-left:10px">会员登录</span>
-        <span v-on:click="CloseWin()" class="r" style="margin-left:10px;margin-right:10px">X</span>
+        <span v-on:click="CloseWin()" class="r cur c" style="width:25px;">X</span>
       </div>
       <ul class="ulcen">
         <li class="libor">
           <span class="litxt">手机号码:</span>
-          <input class="liinput" v-model="mobile">
+          <input class="liinput" minlength="11" maxlength="11"  v-model="mobile">
         </li>
         <li class="libor">
           <span class="litxt">登录密码:</span>
@@ -16,21 +16,21 @@
         </li>
         <li class="libor">
           <span class="litxt">验证码:</span>
-          <input class="liinput" style="width:50%;">
+          <input class="liinput" v-model="RndCode" style="width:50%;">
           <button
             style="border:none;border-left:1px solid #0889B3;width:24%;float: right;"
-            class="btn"
-          >5845</button>
+            class="btn cur" @click="getRND()"
+          >{{RndCode}}</button>
         </li>
         <li class="libor" style="border:none;text-align:center;margin-top:20px">
-          <button class="btn" v-on:click="Loging()">登录</button>
+          <button class="btn cur" v-on:click="Loging()">登录</button>
         </li>
       </ul>
       <ul style="margin-top:15px">
         <li class="lireg" style="red"></li>
         <li class="lireg">
-          <router-link to="/member/forgot">忘记密码</router-link>/
-          <router-link to="/member/Regmember">免费注册</router-link>
+          <router-link class="cur" to="/member/forgot">忘记密码</router-link>/
+          <router-link class="cur" to="/member/Regmember">免费注册</router-link>
         </li>
       </ul>
     </div>
@@ -45,7 +45,8 @@ export default {
       mobile: "13812341234",
       password: "123123",
       check: "",
-      lginfo: ""
+      lginfo: "",
+      RndCode:''
     };
   },
   computed: {
@@ -53,6 +54,13 @@ export default {
   },
   methods: {
     //子函数
+    getRND:function(){
+        let nMax	= 9999;
+				let nMin	= 1000;
+				let LongN	= nMax-nMin;
+        let RndNum=	Number(nMin)+Math.round(Math.random()*LongN);
+        this.RndCode  = RndNum;
+    },
     CloseWin: function() {
       this.gCmd.Pages = 0;
       this.$router.push({ path: "/home" });
@@ -77,6 +85,12 @@ export default {
       })
         .then(res => {
           if (res.data.code == "2416050179") {
+            alert(res.data.message);
+          }
+          if(res.data.code=="2416050185"){
+            alert(res.data.message);
+          }
+          if(res.data.code=="2416115712"){
             alert(res.data.message);
           }
           if (res.data.code == 0) {
@@ -122,6 +136,7 @@ export default {
   },
   mounted: function() {
     //渲染之前调用
+    this.getRND()
   },
   created() {}
 };

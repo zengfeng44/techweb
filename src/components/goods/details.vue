@@ -6,25 +6,27 @@
 
         <img class="abox900" :src="goodsData.picture" width="100%">
       </div>
-      <div class="goodsinfo">
-        <div class="title txt">商品名称:{{goodsData.product_name}}</div>
-        <div class="info txt">商品价格:{{goodsData.price}}</div>
+      <div class="goodsinfo gbk rim">
+        <div class="info wbk">商品信息</div>
+        <div class="info">商品名称:{{goodsData.product_name}}</div>
+        <div class="info">商品价格:{{goodsData.price}}</div>
+        <div class="info">赠送积分:{{goodsData.give_integral}}</div>
       </div>
-      <div class="parameter b">
+      <div class="shop-box maxwin">
+        <div class="all cur hover" @click="addCart()">加入购物车</div>
+        <div class="all cur hover" style="border-left:1px solid #0889b3" @click="toCart()">查看购物车</div>
+      </div>
+      <div class="parameter">
         <div class="btnBox">
-          <div class="btnimg r" :style="btnl">商品详情</div>
+          <div class="btnimg r cur" :style="btnl" @click="btnDetails()">商品详情{{btnInfo}}</div>
         </div>
         <div class="btnBox">
-          <div class="btnimg2 l" :style="btnr">商品规格</div>
+          <div class="btnimg2 l cur" :style="btnr" @click="btnSatale()">商品规格{{btnInfo}}</div>
         </div>
       </div>
-      <div class="goodsconten b">aaaa</div>
+      <div v-if="btnInfo==true" class="goodsconten rim" style="margin-top:0px;border-top:none;margin-bottom:40px">aaaa</div>
+      <div v-else="btnInfo==false" class="goodsconten rim" style="margin-top:0px;border-top:none;margin-bottom:40px">bbbbb</div>
     </div>
-    <div class="shop-box maxwin">
-      <button class="all" @click="addCart()">加入购物车</button>
-      <button class="all"  @click="toCart()">查看购物车</button>
-    </div>
-    <div style="height:40px"></div>
   </div>
 </template>
 
@@ -36,7 +38,8 @@ export default {
       goodsimg: "",
       btnl: "",
       btnr: "",
-      goodsData: ""
+      goodsData: "",
+      btnInfo: true,
     };
   },
   computed: {
@@ -46,6 +49,9 @@ export default {
     //子函数
     getGoods: function() {
       let id = this.$route.params.id;
+      if (id == "") {
+        this.$router.push({ path: "/home" });
+      }
       this.$axios({
         method: "post",
         url: this.HOSTS + "/goods/info",
@@ -97,6 +103,12 @@ export default {
     toCart: function() {
       this.$router.push({ path: "/goods/cart" });
     },
+    btnDetails: function() {
+        this.btnInfo = true;
+    },
+    btnSatale:function(){
+        this.btnInfo = false;
+    }
   },
   watch: {
     //监听
@@ -104,9 +116,9 @@ export default {
   mounted: function() {
     this.getGoods();
     //渲染之前调用
-    let winbox  = window.innerWidth;
-    if(winbox >500){
-      winbox =500
+    let winbox = window.innerWidth;
+    if (winbox > 500) {
+      winbox = 500;
     }
     let imgW = winbox * 0.95;
     let imgH = winbox * 0.95 * 0.6;
@@ -123,7 +135,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 .b {
   border: 1px solid rgba(13, 231, 166, 0.61);
 }
@@ -132,6 +143,7 @@ export default {
   height: auto;
   margin-left: auto;
   margin-right: auto;
+  color: #fff;
 }
 .goodsimg {
   width: 100%;
@@ -150,7 +162,6 @@ export default {
 }
 .goodsinfo {
   width: 100%;
-  height: 50px;
   display: flex;
   flex-direction: column;
 }
@@ -159,7 +170,10 @@ export default {
   background: hsla(98, 88%, 47%, 0.534);
 }
 .info {
-  flex: 2;
+  flex: 1;
+  height: 30px;
+  line-height: 30px;
+  text-indent: 2em;
 }
 .parameter {
   width: 100%;
@@ -173,6 +187,8 @@ export default {
 }
 .btnimg {
   width: 100%;
+  border-left: 1px solid #0889b3;
+  border-radius: 10px 0 0 0;
   background: url(../../assets/goods/btn01.png);
   background-size: 100%;
   background-repeat: no-repeat;
@@ -180,6 +196,8 @@ export default {
 }
 .btnimg2 {
   width: 100%;
+  border-right: 1px solid #0889b3;
+  border-radius: 0 10px 0 0;
   background: url(../../assets/goods/btn02.png);
   background-size: 100%;
   background-repeat: no-repeat;
@@ -194,18 +212,26 @@ export default {
 .shop-box {
   height: 40px;
   width: 100%;
-  position: fixed;
   display: flex;
   flex-direction: row;
-  bottom: 0;
-  background: #fff;
-  font-size: 16px;
-  border-bottom: 0.5px solid #dddddd;
-  border-top: 0.5px solid #dddddd;
+  border: 1px solid #0889b3;
+  border-top: none;
 }
 .shop-box .all {
   flex: 1;
   line-height: 40px;
   text-align: center;
+  color: #fff;
+}
+
+.btnimg:hover {
+  background: url(../../assets/goods/btn03.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.btnimg2:hover {
+  background: url(../../assets/goods/btn04.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 </style>

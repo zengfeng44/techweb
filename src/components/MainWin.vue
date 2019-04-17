@@ -2,9 +2,9 @@
   <div id="appWeb">
       <div class="header maxwin">
 				<div class="headbox">
-					<Icon class="icon" size="30" type="md-planet" />
+					<!--<Icon class="icon" size="30" type="md-planet" />
 					<input type="text" class="inputed" placeholder="Enter something..."/>
-					<Icon class="icon" size="30" type="ios-wifi" />
+					<Icon class="icon" size="30" type="ios-wifi" />-->
 				</div>
 			</div>	
       <div class="conten">
@@ -81,7 +81,7 @@ export default {
     background-size: auto;
     background-size:100% 100%;
     background-repeat:no-repeat;
-    z-index: 999;
+    z-index: 99999;
   }
   .conten{
     width:100%;
@@ -95,7 +95,7 @@ export default {
     bottom:0px;
     height:60px;
     width:100%;
-    border:0.5px solid rgba(0,155,125,0.6);
-    z-index: 999;
+    border-top:0.5px solid rgba(0,155,125,0.6);
+    z-index: 99999;
   }
 </style>

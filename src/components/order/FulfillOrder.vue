@@ -55,7 +55,7 @@
 
 <script>
 export default {
-  name: "waitPay",
+  name: "FulfillOrder",
   data() {
     return {
       absbackimg: "",
@@ -100,13 +100,12 @@ export default {
   },
   methods: {
     //子函数
-    
     getOrder: function() {
       this.$axios({
         method: "post",
         url: this.HOSTS + "/order/list",
         data: {
-          pay_status:0
+          ship_status:1
         }
       })
         .then(res => {
@@ -128,7 +127,7 @@ export default {
         url: this.HOSTS + "/order/list",
         data: {
           page: this.pages,
-          pay_status:0
+         ship_status:1
         }
       })
         .then(res => {

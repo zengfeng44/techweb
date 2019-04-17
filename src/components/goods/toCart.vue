@@ -3,15 +3,22 @@
     <div class="item-box">
       <div class="item" v-for="item in CartData" :key="item.id">
         <div class="sed-box">
-          <input type="checkbox" name="Bike">
+          <input
+            class="cur"
+            type="checkbox"
+            checked="1"
+            name="goods"
+            :value="item.product_id"
+            @change="delGoods(item.product_id)"
+          >
         </div>
         <div class="img-box">
           <img :src="item.picture" height="100">
+          {{item.product_id}}
         </div>
         <div class="info-box">
           <div class="name-box">
-            <span>{{item.product_name}}</span>
-            <button style="width:30px;height:30px;float:right">X</button>
+            <span>{{item.product_name}}{{item.product_id}}</span>
           </div>
           <div class="price-box">
             <span>{{item.price}}</span>
@@ -19,28 +26,20 @@
           </div>
           <div class="add-box">
             <button v-on:click="item.product_nums--">-</button>
-            <input type="number" v-model="item.product_nums">
+            <input type="number" min="1" v-model="item.product_nums">
             <button v-on:click="item.product_nums++">+</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="shop-box maxwin" v-if="shopInfo==0">
-      <div class="all">
-        <input type="checkbox" tag="全选">
-      </div>
-      <div class="allmon">
-        <span style="color:red">￥{{money}}</span>
-      </div>
-      <div class="buy">
-        <button @click="getShop()">马骝的结算</button>
-      </div>
+    <div class="shop-box maxwin gbk rim" v-if="shopInfo==0" @click="getShop()">
+      <div class="shopping cur hover">立即结算</div>
     </div>
     <div class="pay-box appgb appbk maxwin" v-else="shopInfo==1">
       <div class="pay-win appwb">
         <span style="margin-left:10px">支付结算</span>
-        <span class="r" @click="shopInfo=0" style="margin-right:10px;margin-left:10px">X</span>
+        <span class="r cur" @click="shopInfo=0" style="margin-right:10px;margin-left:10px">X</span>
       </div>
       <div class="pay-min">
         <div v-if="shopData.default_address==item.id" v-for="item in shopData.member_address">
@@ -49,10 +48,10 @@
             class="pay-info"
           >地&nbsp;&nbsp;&nbsp;址：{{item.province}}{{item.city}}{{item.district}}{{item.address}}</div>
         </div>
-        <router-link to="/address/index" tag="div" class="pay-info">
+        <div class="pay-info">
           {{shopData.default_address}}
-          <span class="r">地址选择></span>
-        </router-link>
+          <router-link to="/address/index" tag="span" class="r cur">地址选择></router-link>
+        </div>
         <div class="pay-remarks">
           备注：
           <input type="text" v-model="remarks">
@@ -62,8 +61,8 @@
       <div class="pay-win temp">
         <span style="color:red">共计：{{shopData.total_amount}}元</span>
       </div>
-      <div class="pay-win appbk" style="text-align:center;background:rgba(0,155,155,0.2)">
-        <span class="apptxt" style="font-size:16px;height:40px" @click="getPay()">确认支付</span>
+      <div class="pay-win appbk cur hover c gbk" @click="getPay()">
+        <span class="apptxt" style="font-size:16px;height:40px">确认支付</span>
       </div>
     </div>
     <div style="height:40px"></div>
@@ -80,7 +79,8 @@ export default {
       CartData: "",
       shopData: "",
       shopInfo: 0,
-      remarks: ""
+      remarks: "",
+      price: 0
     };
   },
   computed: {
@@ -88,6 +88,49 @@ export default {
   },
   methods: {
     //子函数
+    delGoods: function(id) {
+      this.$axios({
+        method: "post",
+        url: this.HOSTS + "/cart/remove",
+        data: {
+          product_id: id
+        }
+      })
+        .then(res => {
+          if (res.data.code == 0) {
+            console.log(res);
+          }
+          if (res.data.code == 2416181248) {
+            this.$axios({
+              method: "post",
+              url: this.HOSTS + "/cart/addToCart",
+              data: {
+                product_id: id
+              }
+            })
+              .then(res => {
+                if (res.data.code == "2416050176") {
+                  alert(res.data.message);
+                  this.$router.push({ path: "/member/login" });
+                }
+                if (res.data.code == "2416181248") {
+                  alert(res.data.message);
+                }
+                if (res.data.code == 0) {
+                }
+                console.log(res);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+          console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
     getCart: function() {
       this.$axios({
         method: "post",
@@ -106,12 +149,13 @@ export default {
             this.CartData = res.data.result;
             console.log(res.data.message);
           }
-          console.log(res);
+          console.log(this.CartData);
         })
         .catch(error => {
           console.log(error);
         });
     },
+
     //购物车结算
     getShop: function() {
       this.$axios({
@@ -121,8 +165,15 @@ export default {
       })
         .then(res => {
           if (res.data.code == 0) {
+            if(res.data.result.member_address==''){
+              this.$router.push({ path: "/address/add" });
+            }
             this.shopInfo = 1;
             this.shopData = res.data.result;
+            if (this.shopData.total_amount < 1) {
+              alert("请先选择商品");
+              this.shopInfo = 0;
+            }
             console.log(this.shopData);
           }
         })
@@ -142,8 +193,15 @@ export default {
       })
         .then(res => {
           let code = res.data.code;
-          if (code == "2416312321" || code == "2416246784") {
+          if (code == "2416246784") {
             alert(res.data.message);
+          }
+          if(code=="2416050182"){
+            this.$router.push({ path: "/address/index" });
+          }
+          if (code == "2416312321") {
+            alert(res.data.message + "请充值后支付");
+            this.$router.push({ path: "/order/index" });
           }
           if (res.data.code == 0) {
             alert("支付成功");
@@ -242,10 +300,18 @@ export default {
   display: flex;
   flex-direction: row;
   bottom: 0;
-  background: #fff;
   font-size: 16px;
-  border-top: 0.5px solid #dddddd;
+  text-align: center;
+  line-height: 40px;
 }
+.shopping {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  line-height: 40px;
+  color: aqua;
+}
+
 .shop-box .all {
   flex: 1;
   line-height: 40px;
@@ -298,7 +364,6 @@ export default {
 }
 .pay-remarks {
   flex: 2;
-  height: 60px;
   border-bottom: 1px solid #0889b3;
 }
 .temp {
@@ -307,5 +372,14 @@ export default {
   text-align: center;
   font-size: 18px;
   background: rgba(0, 0, 0, 0.5);
+}
+input[type="text"] {
+  background: none;
+  border: 0.5px solid rgba(12, 180, 247, 0.664);
+  border-bottom: none;
+  width: 100%;
+  height: 30px;
+  float: right;
+  color: #fff;
 }
 </style>

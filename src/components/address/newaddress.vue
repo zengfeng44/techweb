@@ -6,38 +6,53 @@
           <div class="glb-l gta"></div>
           <div class="glb-r">
             <div class="globamin">
-              收货人
-              <input class="glb-input" tyle="input" v-model="consignee">
+              <span class="r">收货人：</span>
             </div>
             <div class="globamin">
-              手机号码
-              <input class="glb-input" tyle="input" v-model="mobile">
+              <span class="r">手机号码：</span>
             </div>
             <div class="globamin">
-              邮政编码
-              <input class="glb-input" tyle="input" v-model="zipcode">
+              <span class="r">邮政编码：</span>
             </div>
             <div class="globamin">
-              选择省份
-              <select name=""  v-model="province" @change="getCity">
-                <option :value="item.id" v-for="item in proData">{{item.name}}</option>
+              <span class="r">选择省份：</span>
+            </div>
+            <div class="globamin">
+              <span class="r">选择城市：</span>
+            </div>
+            <div class="globamin">
+              <span class="r">选择地区：</span>
+            </div>
+            <div class="globamin">
+              <span class="r">地址：</span>
+            </div>
+          </div>
+          <div class="glb-r" style="flex:8">
+            <div class="globamin">
+              <input class="glb-input" type="input" v-model="consignee">
+            </div>
+            <div class="globamin">
+              <input class="glb-input" minlength="11" maxlength="11" type="input" v-model="mobile">
+            </div>
+            <div class="globamin">
+              <input class="glb-input" type="input" v-model="zipcode">
+            </div>
+            <div class="globamin">
+              <select class="glb-input cur" name v-model="province" @change="getCity">
+                <option :value="item.id" style="color:#000" v-for="item in proData" >{{item.name}}</option>
               </select>
-              ID:{{test}}
             </div>
             <div class="globamin">
-              选择城市
-              <select name="" v-model="city" @change="getdrt">
-                <option :value="item.id" v-for="item in cityData">{{item.name}}</option>
+              <select class="glb-input cur" name v-model="city" @change="getdrt">
+                <option :value="item.id" style="color:#000" v-for="item in cityData">{{item.name}}</option>
               </select>
             </div>
             <div class="globamin">
-              选择地区
-              <select name="" v-model="district">
-                <option :value="item.id" v-for="item in drtData">{{item.name}}</option>
+              <select class="glb-input cur" name v-model="district">
+                <option :value="item.id" style="color:#000" v-for="item in drtData">{{item.name}}</option>
               </select>
             </div>
             <div class="globamin">
-              详细地址
               <input class="glb-input" tyle="input" v-model="address">
             </div>
           </div>
@@ -45,7 +60,7 @@
         </div>
       </div>
     </div>
-    <div class="addbox gtback" @click="addAddress()">保存地址</div>
+    <div class="addbox hover cur" @click="addAddress()">保存地址</div>
   </div>
 </template>
 
@@ -64,9 +79,9 @@ export default {
       is_default: "",
       proData: "",
       cityData: "",
-      drtData:'',
-      test:"",
-    }
+      drtData: "",
+      test: ""
+    };
   },
   methods: {
     //子函数
@@ -85,7 +100,7 @@ export default {
           city: this.city,
           district: this.district,
           address: this.address,
-          is_default:1
+          is_default: 1
         }
       })
         .then(res => {
@@ -94,7 +109,11 @@ export default {
             this.toWin();
             console.log(res.data.message);
           }
-          if (res.data.code == "2416050183" || res.data.code == "2415984640" || res.data.code=='2416050184') {
+          if (
+            res.data.code == "2416050183" ||
+            res.data.code == "2415984640" ||
+            res.data.code == "2416050184"
+          ) {
             alert(res.data.message);
           }
           console.log(res);
@@ -104,8 +123,8 @@ export default {
         });
     },
     getParent: function() {
-      this.cityData=''
-      this.drtData =''
+      this.cityData = "";
+      this.drtData = "";
       this.$axios({
         method: "post",
         url: this.HOSTS + "/region/list",
@@ -123,12 +142,12 @@ export default {
         });
     },
     getCity: function() {
-      this.drtData =''
+      this.drtData = "";
       this.$axios({
         method: "post",
         url: this.HOSTS + "/region/list",
         data: {
-          parent_id :this.province
+          parent_id: this.province
         }
       })
         .then(res => {
@@ -142,13 +161,12 @@ export default {
           console.log(error);
         });
     },
-    getdrt:function(){
-
+    getdrt: function() {
       this.$axios({
         method: "post",
         url: this.HOSTS + "/region/list",
         data: {
-          parent_id :this.city
+          parent_id: this.city
         }
       })
         .then(res => {
@@ -162,12 +180,11 @@ export default {
           console.log(error);
         });
     }
-
   },
   mounted: function() {
     this.getParent();
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -192,11 +209,11 @@ export default {
   background: rgba(12, 67, 91, 0.3);
 }
 .glb-l {
-  flex: 1;
+  flex: 0.5;
   align-items: stretch;
 }
 .glb-r {
-  flex: 8;
+  flex: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -209,7 +226,7 @@ export default {
 }
 .glb-input {
   height: 30px;
-  width: 70%;
+  width: 100%;
   line-height: 30px;
   /* font-size: 16px; */
   color: #15f5ff;

@@ -13,28 +13,43 @@
           <span>时间:{{item.create_time}}</span>
         </div>
         <div class="absimg" :style="absimg">
-             <swiper :options="swiperOption">
-              <swiper-slide  class="swiper-container" style="background:none;text-align: center;" v-for="goods in item.products" :key="goods.id">
-                <div > {{goods.product_name}}X{{goods.product_nums}} </div>
-              </swiper-slide>
-              
-            </swiper>
+          <swiper :options="swiperOption">
+            <swiper-slide
+              class="swiper-container"
+              style="background:none;text-align: center;"
+              v-for="goods in item.products"
+              :key="goods.id"
+            >
+              <div>{{goods.product_name}}X{{goods.product_nums}}</div>
+            </swiper-slide>
+          </swiper>
         </div>
         <div class="absprice" :style="absprice">
-          <span v-if="item.pay_status == 1">待收货</span>
-          <span v-else="item.pay_status == 2">已完成</span>
+          <div v-if="item.pay_status == 0">待付款</div>
+          <div v-else="item.pay_status == 1">
+            <span v-if="item.shipping_status==0">待发货</span>
+            <span v-else-if="item.shipping_status==1">已发货</span>
+            <span v-else="item.shipping_status==2">已完成</span>
+          </div>
         </div>
-        <router-link :to="{name:'Order',params:{id:item.order_id}}" tag='div' class="absstate" :style="absstate">
+        <router-link
+          :to="{name:'Order',params:{id:item.order_id}}"
+          tag="div"
+          class="absstate cur"
+          :style="absstate"
+        >
           <span>查看订单</span>
         </router-link>
         <div class="absinfo" :style="absinfo">
-          <span>共计{{item.total_amount}}元</span>
+          <span>共计：{{item.total_amount}}元{{index+1}}</span>
         </div>
       </div>
       <div style="margin-top:10px;margin-bottom: 10px;">
         <img src="../../assets/bottom01.png" width="100%">
       </div>
     </div>
+    <div class="appbtn cur hover" @click="loadMore()" v-if="current_page<last_page">查看更多</div>
+    <div class="appbtn cur hover"  v-else="current_page=last_page">没有更多数据</div>
   </div>
 </template>
 
@@ -50,6 +65,9 @@ export default {
       absinfo: "",
       absimg: "",
       listData: "",
+      pages: 1,
+      current_page: "",
+      last_page: "",
       //swiper start
       swiperOption: {
         autoplay: {
@@ -66,7 +84,7 @@ export default {
         observeParents: true, //当改变swiper的样式（例如隐藏/显示）或者修改swiper的子元素时，自动初始化swiper
         pagination: {
           el: ".swiper-pagination",
-           //type : 'progressbar', //分页器形状
+          //type : 'progressbar', //分页器形状
           clickable: true //点击分页器的指示点分页器会控制Swiper切换
         },
         navigation: {
@@ -91,6 +109,31 @@ export default {
         .then(res => {
           if (res.data.code == 0) {
             this.listData = res.data.result;
+             this.current_page = res.data.result.current_page;
+            this.last_page = res.data.result.last_page;
+          }
+          console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    loadMore: function() {
+      this.pages += 1;
+      this.$axios({
+        method: "post",
+        url: this.HOSTS + "/order/list",
+        data: {
+          page: this.pages
+        }
+      })
+        .then(res => {
+          if (res.data.code == 0) {
+            this.current_page = res.data.result.current_page;
+            this.last_page = res.data.result.last_page;
+            this.listData.data = this.listData.data.concat(
+              res.data.result.data
+            );
           }
           console.log(res);
         })
@@ -105,18 +148,14 @@ export default {
   mounted: function() {
     //渲染之前调用
     this.getOrder();
-    let winBox  = window.innerWidth;
-    if (winBox>500){
-      winBox=500
+    let winBox = window.innerWidth;
+    if (winBox > 500) {
+      winBox = 500;
     }
-    this.absbackimg =
-      this.absbackimg + "height:" + winBox * 0.7366 + "px;";
-    this.abstitle =
-      this.abstitle + "height:" + winBox * 0.144 + "px;";
-    this.absprice =
-      this.absprice + "height:" + winBox * 0.055 + "px;";
-    this.absstate =
-      this.absstate + "height:" + winBox * 0.055 + "px;";
+    this.absbackimg = this.absbackimg + "height:" + winBox * 0.7366 + "px;";
+    this.abstitle = this.abstitle + "height:" + winBox * 0.144 + "px;";
+    this.absprice = this.absprice + "height:" + winBox * 0.055 + "px;";
+    this.absstate = this.absstate + "height:" + winBox * 0.055 + "px;";
     this.absimg = this.absimg + "height:" + winBox * 0.256 + "px;";
     this.absinfo = this.absinfo + "height:" + winBox * 0.08 + "px;";
 
@@ -126,20 +165,11 @@ export default {
       ((winBox * 0.144) / 3).toFixed(0) +
       "px;";
     this.absprice =
-      this.absprice +
-      "line-height:" +
-      (winBox * 0.055).toFixed(0) +
-      "px;";
+      this.absprice + "line-height:" + (winBox * 0.055).toFixed(0) + "px;";
     this.absstate =
-      this.absstate +
-      "line-height:" +
-      (winBox * 0.055).toFixed(0) +
-      "px;";
+      this.absstate + "line-height:" + (winBox * 0.055).toFixed(0) + "px;";
     this.absinfo =
-      this.absinfo +
-      "line-height:" +
-      (winBox * 0.08).toFixed(0) +
-      "px;";
+      this.absinfo + "line-height:" + (winBox * 0.08).toFixed(0) + "px;";
 
     // 		this.abstitle	=	this.abstitle	+ 'font-size:' + (winBox * 0.144/3*0.4).toFixed(0) + 'px;'
     // 		this.absprice	=	this.absprice	+ 'font-size:' + (winBox * 0.055*0.4).toFixed(0) + 'px;'

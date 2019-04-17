@@ -26,6 +26,9 @@ import newAddress from '@/components/address/newaddress'
 import memberinfo from '@/components/member/memberinfo'
 import memberedit from '@/components/member/memberedit'
 import Order from '@/components/order/order'
+import amounts from '@/components/wallet/amounts'
+
+import waitOrder from '@/components/order/waitOrder'
 Vue.use(Router)
 
 export default new Router({
@@ -40,10 +43,7 @@ export default new Router({
         {path: '/itemize',name: 'itemize',component: itemize},
         {path: '/jfshop',name: 'jfshop',component: jfshop},
         {path: '/member',name: 'member',component: member},
-        {path: '/myteam',name: 'myteam',component: myteam},
         {path: '/jfOrder',name: 'jfOrder',component: jfOrder},
-        {path: '/waitPay',name: 'waitPay',component: waitPay},
-        {path: '/Receiving',name: 'Receiving',component: Receiving},
         {path: '/evaluate',name: 'evaluate',component: evaluate},
       ],
     },{
@@ -57,10 +57,14 @@ export default new Router({
         {path: '/address/add',name: 'newAddress',component: newAddress},
         {path: '/mywallet',name: 'mywallet',component: mywallet},
         {path: '/order/index',name: 'GeneralOrder',component: GeneralOrder},
+        {path: '/order/waitPay',name: 'waitPay',component: waitPay},
         {path: '/order/order:id',name: 'Order',component: Order},
+        {path: '/order/Receiving',name: 'Receiving',component: Receiving},
         {path: '/member/info',name: 'memberinfo',component: memberinfo},
         {path: '/member/edit',name: 'memberedit',component: memberedit},
-
+        {path: '/myteam',name: 'myteam',component: myteam},
+        {path: '/wallet/amounts',name: 'amounts',component: amounts},
+        {path: '/order/waitOrder',name: 'waitOrder',component: waitOrder},
 
       ],
     },{

@@ -2,7 +2,7 @@
 	<div class="menu_size">
 		<ul>
 			<div v-for="(item,index) in index_menu">
-				<li  @click="open_index(index)"  >
+				<li  @click="open_index(index)" class="cur" >
 					<Icon  :type="item.type" size="30" class="noact"  :class="{ blue:index==current}" />
 					<br/>
 					<span class="noact" :class="{ blue:index==current}" >{{item.name}}</span>

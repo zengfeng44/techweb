@@ -44,12 +44,12 @@
         <img src="../../assets/cavs02-02.png" width="100%">
         <div class="goods">
           <ul>
-            <router-link :to="{name:'goodsdetails',params:{id:item.id}}" tag="li" class="item-list" v-for="item in goods" :key="item.id">
-              <div class="image"><img src="../../assets/logo.png" width="100%" /></div>
-              <div class="info">
-                  价格:{{item.price}} <br/>
+            <router-link :to="{name:'goodsdetails',params:{id:item.id}}" tag="li" class="item-list cur" v-for="item in goods" :key="item.id">
+              <div class="image">价格:{{item.price}} <br/>
                   赠送积分：3800<br/>
-                  {{item.id}}
+                  {{item.id}}</div>
+              <div class="info">
+                  <img src="../../assets/logo.png" width="100%" />
               </div>
               <div class="title">{{item.product_name}}</div>
             </router-link>

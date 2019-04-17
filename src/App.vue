@@ -262,14 +262,12 @@ a {
 }
 .box-two-r {
   flex: 9;
-  max-width: 375px;
   height: auto;
   display: flex;
   flex-direction: row;
 }
 .box-two-c {
   flex: 9;
-  max-width: 375px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -279,6 +277,7 @@ a {
   height: auto;
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
 }
 .box-main-c {
   flex: 1;
@@ -289,16 +288,29 @@ a {
 .box-min {
   flex: 1;
 }
+.box-min-2 {
+  flex: 1;
+}
 .box-l {
   flex: 0.5;
   height: auto;
+  max-width:15px;
+
 }
 .box-r {
   flex: 0.5;
   height: auto;
+  max-width:15px;
 }
 .rim {
   border: 1px solid #0889b3;
+}
+.gbk{
+    
+    background: rgba(12, 67, 91, 0.3);
+}
+.wbk{
+  background: rgba(72, 166, 191, 0.4);
 }
 .c {
   text-align: center;
@@ -306,9 +318,51 @@ a {
 .t-r {
   text-align: right;
 }
+.t-l{
+  text-align: left;
+}
+.t-n{
+  overflow: hidden; /*自动隐藏文字*/
+  text-overflow: ellipsis;/*文字隐藏后添加省略号*/
+  white-space: nowrap;/*强制不换行*/
+}
+.t-c{
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+.t2em{
+  text-indent: 2em;
+}
+.t1em{
+  text-indent: 1em;
+}
 .maxwin{
   max-width: 500px;
   margin-left:auto;
   margin-right:auto;
+}
+.cur{
+  cursor:pointer;
+}
+.hover{
+  background: rgba(8, 189, 250, 0.34);
+  
+}
+.hover:hover{
+   background: rgba(8, 189, 250, 0.64);
+}
+.act:active{
+  background: rgba(8, 189, 250, 0.64);
+}
+.appbtn{
+  height:35px;
+  line-height:35px;
+  width:100%;
+  text-align: center;
+  color:#fff;
+  font-size:16px;
 }
 </style>

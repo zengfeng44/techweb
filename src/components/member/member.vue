@@ -5,13 +5,13 @@
         <div class="bk l" style="width: 5%;">&nbsp;</div>
         <div class="img02 l ani-2" :style="imghead" v-on:click="getOut()">
           <!--<img style="border-radius: 50%;text-align: center;margin-top:22%" src="" width="52.5%" />-->
-          <div class="ani">退出</div>
+          <div class="ani cur">退出</div>
         </div>
         <div class="bk" style="width:5%;">&nbsp;</div>
         <div class="bk" style="width:53%;margin-top:10px">
           <div style="width:45%;float: left;">
             <div class="img02-02 img02-03" :style="scimg">
-              <div class="brt" :style="collect">{{myData.notice_num}}</div>
+              <div class="brt" :style="collect">{{infoData.notice_num}}</div>
             </div>
             <div style="margin-top:8px">
               <img src="../../assets/member/mber-t05.png" width="100%">
@@ -19,7 +19,7 @@
           </div>
           <div style="width:45%;float: right;">
             <div class="img02-02 img02-04" :style="scimg">
-              <div class="brt" :style="collect">{{myData.collect_num}}</div>
+              <div class="brt" :style="collect">{{infoData.collect_num}}</div>
             </div>
             <div style="margin-top:8px;">
               <img src="../../assets/member/mber-t06.png" width="100%">
@@ -49,14 +49,14 @@
           </div>
           <div class="box-vip">
             <div>
-              <div class="bk l brt" style="width:100%;text-align: right;">{{lv}}&nbsp;&nbsp;VIP</div>
+              <div class="bk l brt" style="width:100%;text-align: right;">{{infoData.level_name}}{{infoData.id}}&nbsp;&nbsp;VIP</div>
               <div class="bk l brt" style="width:100%;border-bottom:1px solid #15F5FF;"></div>
             </div>
             <div>
               <div
                 class="bk l brt"
                 style="width:100%;margin-top:10px;text-align: right;"
-              >&nbsp;&nbsp;IP</div>
+              ><span style="margin-right:2em;">{{infoData.invite_code}}</span>邀请码</div>
               <div class="bk l brt" style="width:100%;border-bottom:1px solid #15F5FF;"></div>
             </div>
           </div>
@@ -72,16 +72,16 @@
     </div>
     <div class="menubox">
       <ul>
-          <router-link to="/mywallet" tag="li" :style="menutxt">
-          <span>钱包</span>
+          <router-link to="/order/index" class="cur" tag="li" :style="menutxt">
+          <span>全部订单</span>
          </router-link>
-          <router-link to="/member/info" tag="li" :style="menutxt">
+          <router-link to="/member/info" class="cur"  tag="li" :style="menutxt">
           <span>个人信息</span>
          </router-link>
-        <router-link to="/goods/cart" tag="li" :style="menutxt">
+        <router-link to="/goods/cart" class="cur"  tag="li" :style="menutxt">
           <span>购物车</span>
         </router-link>
-        <router-link to="/address/index" tag="li" :style="menutxt">
+        <router-link to="/address/index" class="cur"  tag="li" :style="menutxt">
           <span>地址管理</span>
         </router-link>
       </ul>
@@ -95,30 +95,35 @@
       <div class="l" style="width:100%;">
         <div class="Rndmenubox">
           <ul style="float: left;">
-            <router-link to="/order/index" tag="li" class="minbox1">
+             <router-link to="/order/index" tag="li" class="minbox1 cur">
               <div class="minbox3">全部订单</div>
-              <div class="minbox3-1">{{myData.total_order}}</div>
+              <div class="minbox3-1">{{infoData.total_order}}</div>
             </router-link>
-            <router-link to="/waitPay" tag="li" class="minbox1">
+            <router-link to="/order/waitPay" tag="li" class="minbox1 cur">
               <div class="minbox3">待付款</div>
-              <div class="minbox3-1">{{myData.unpaid_order}}</div>
+              <div class="minbox3-1">{{infoData.unpaid_order}}</div>
             </router-link>
-            <router-link to="/Receiving" tag="li" class="minbox1">
+            <router-link to="/order/Receiving" tag="li" class="minbox1 cur">
               <div class="minbox3">待收货</div>
-              <div class="minbox3-1">{{myData.received_order}}</div>
+              <div class="minbox3-1">{{infoData.received_order}}</div>
             </router-link>
+ 
           </ul>
           <ul style="float: left;">
-            <router-link to="/mywallet" tag="li" class="minbox2">
+            <router-link to="/mywallet" tag="li" class="minbox2 cur">
               <div class="minbox3">我的钱包</div>
-              <div class="minbox3-1">商城积分：{{Number(myData.cash_money)+5800}}</div>
-              <div class="minbox3-1">科技积分：{{Number(myData.cash_money)+1250}}</div>
+              <div class="minbox3-1">现金币：{{Number(myData.cash_money)}}</div>
+              <div class="minbox3-1">商城积分：{{Number(myData.product_money)}}</div>
+              <div class="minbox3-1">科技积分：{{Number(myData.digital_money)}}</div>
             </router-link>
-            <router-link to="/myteam" tag="li" class="minbox2">
+            <router-link to="/myteam" tag="li" class="minbox2 cur">
               <div class="minbox3">我的团队</div>
-              <div class="minbox3-1">总人数：{{myData.team_num}}</div>
+              <div class="minbox3-1">总人数：{{infoData.team_num}}</div>
               <div class="minbox3-1">
-                总业绩：{{myData.team_num*3800}}
+                总业绩：{{infoData.total_ach}}
+              </div>
+              <div class="minbox3-1">
+                新增业绩：{{infoData.new_ach}}
               </div>
             </router-link>
           </ul>
@@ -162,10 +167,10 @@ export default {
       imghead: "",
       scimg: "",
       collect: "",
-      myData: "",
+      infoData: "",
+      myData:"",
       LgInfo: "",
       menutxt: "",
-      lv: ""
     };
   },
   computed: {
@@ -173,7 +178,7 @@ export default {
   },
   methods: {
     //子函数
-    getWallet: function() {
+    getMember: function() {
       this.$axios({
         method: "post",
         url: this.HOSTS + "/member/index"
@@ -186,16 +191,29 @@ export default {
           }
           if (res.data.code == 0) {
             this.LgInfo = 1;
-            this.myData = res.data.result;
-            this.gCmd.vipData = this.myData;
-            this.lv = res.data.result.member_level.level_name;
+            this.infoData = res.data.result;
+            this.gCmd.vipData = this.infoData;
             console.log(res);
-            console.log(this.lv);
           }
         })
         .catch(error => {
           console.log(error);
           this.$router.push({ path: "/member" });
+        });
+    },
+     getWallet: function() {
+      this.$axios({
+        method: "post",
+        url: this.HOSTS + "/account/info"
+      })
+        .then(res => {
+          if (res.data.code == 0) {
+            this.myData = res.data.result;
+          }
+          console.log(this.myData);
+        })
+        .catch(error => {
+          console.log(error);
         });
     },
     getOut: function() {
@@ -221,6 +239,7 @@ export default {
   mounted: function() {
     //渲染之前调用
     this.getWallet();
+    this.getMember();
     let maxWin  = window.innerWidth;
     if (maxWin >500){
       maxWin =500
@@ -330,7 +349,7 @@ export default {
 .minbox1 {
   flex: 1;
   min-height: 60px;
-  min-width: 30%;
+  min-width:30%;
   border: 1px solid #0889b3;
   background: rgba(12, 67, 91, 0.3);
   border-radius: 5px;
@@ -350,6 +369,12 @@ export default {
   text-align: center;
   display: flex;
   flex-direction: column;
+}
+.minbox2:hover{
+  background: rgba(18, 98, 133, 0.8);
+}
+.minbox1:hover{
+  background: rgba(12, 67, 91, 0.8);
 }
 .minbox3 {
   flex: 1;

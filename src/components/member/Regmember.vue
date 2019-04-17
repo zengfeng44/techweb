@@ -3,7 +3,7 @@
     <div class="loginbox">
       <div class="title">
         <span style="margin-left:10px">注册账号</span>
-        <span v-on:click="CloseWin()" class="r" style="margin-left:10px;margin-right:10px">X</span>
+        <span v-on:click="CloseWin()" class="r cur c" style="width:25px;">X</span>
       </div>
       <ul class="ulcen">
         <li class="libor">
@@ -15,7 +15,7 @@
           <input class="liinput" style="width:50%;" v-model="smscode">
           <button
             style="border:none;border-left:1px solid #0889B3;width:24%;float: right;"
-            class="btn"
+            class="btn cur"
             v-on:click="countDown"
           >{{content}}</button>
         </li>
@@ -32,7 +32,7 @@
           <input class="liinput" v-model="InvCode">
         </li>
         <li class="libor" style="border:none;text-align:center;margin-top:20px;margin-bottom:15px;">
-          <button class="btn" v-on:click="Regber()">立即注册</button>
+          <button class="btn cur" v-on:click="Regber()">立即注册</button>
         </li>
       </ul>
     </div>
@@ -52,7 +52,8 @@ export default {
       lginfo: "",
       content: "发送短信",
       totalTime: 59,
-      canClick: true //添加canClick
+      canClick: true, //添加canClick,
+      smsinfo: ""
     };
   },
   computed: {
@@ -64,6 +65,9 @@ export default {
       this.$router.push({ path: "/member/login" });
     },
     countDown: function() {
+      if(this.mobile==''){
+        return false;
+      }
       if (!this.canClick) return; //改动的是这两行代码
       this.getSMS();
       this.canClick = false;
@@ -91,6 +95,7 @@ export default {
           }
         })
           .then(res => {
+            this.smsinfo = res.data.code;
             if (res.data.code == "2416050177") {
               //手机号码格式不正确
               alert(res.data.message);
@@ -139,6 +144,12 @@ export default {
       })
         .then(res => {
           if (res.data.code == "2416050178") {
+            alert(res.data.message);
+          }
+          if(res.data.code=="2416115712"){
+            alert(res.data.message);
+          }
+          if(res.data.code=="2416050185"){
             alert(res.data.message);
           }
           if (res.data.code == 0) {

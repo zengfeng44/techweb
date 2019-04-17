@@ -7,6 +7,7 @@
             <div class="globamin"></div>
             <div class="globamin">
               <input
+                class="cur"
                 type="radio"
                 :name="item.member_id"
                 :checked="item.is_default==1"
@@ -22,13 +23,13 @@
           </div>
           <div class="glb-l gta">
             <div class="globamin"></div>
-            <div class="globamin" @click="getDel(item.id)">删除</div>
+            <div class="globamin cur" @click="getDel(item.id)">删除</div>
             <div class="globamin"></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="addbox gtback" @click="toAdd()">新增地址</div>
+    <div class="addbox cur hover" @click="toAdd()">新增地址</div>
   </div>
 </template>
 

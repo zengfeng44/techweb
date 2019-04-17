@@ -4,7 +4,7 @@
 		<div class="loginbox">
 			<div class="title">
 				<span style="margin-left:10px">忘记密码</span>
-				<span v-on:click="CloseWin()"  class="r" style="margin-left:10px;margin-right:10px">X</span>
+				<span v-on:click="CloseWin()"  class="r cur c" style="width:25px;">X</span>
 			</div>
 			<ul class="ulcen">
 				<li class="libor">
@@ -21,7 +21,7 @@
 				</li>
 				<li class="libor" >
 					<span class="litxt">验证码:</span>
-					<input class="liinput" style="width:50%;" v-model="smscode"></input>
+					<input class="liinput cur" style="width:50%;" v-model="smscode"></input>
 					<button style="border:none;border-left:1px solid #0889B3;width:24%;float: right;"  class="btn" v-on:click="countDown">{{content}}</button>
 				</li>
 				<li class="libor" style="border:none;text-align:center;margin-top:20px"><button class="btn" v-on:click="FoterPsd">确定修改</button></li>
@@ -31,9 +31,9 @@
 								
 				</li>
 				<li class="lireg">
-                    <router-link to="/member/login">登录</router-link>
+                    <router-link class="cur" to="/member/login">登录</router-link>
                     /
-                    <router-link to="/member/Regmember">免费注册</router-link>
+                    <router-link class="cur" to="/member/Regmember">免费注册</router-link>
 				</li>
 			</ul>
 		</div>
